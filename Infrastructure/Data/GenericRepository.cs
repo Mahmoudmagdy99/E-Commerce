@@ -19,6 +19,13 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         context.Set<T>().Add(entity);
     }
 
+    public async Task<int> CountAsync(ISpecification<T> spec)
+    {
+        var query = context.Set<T>().AsQueryable();
+        query = spec.ApplyCriteria(query);
+        return await query.CountAsync();
+    }
+
     public bool Exists(int id)
     {
         return context.Set<T>().Any(e => e.Id == id);
@@ -29,13 +36,13 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         return await context.Set<T>().FindAsync(id);
     }
 
-    // New method to get a single entity based on specification
+    // =================================================> New method to get a single entity based on specification
     public async Task<T?> GetEntityWithSpecAsync(ISpecification<T> spec)
     {
         return await ApplySpecification(spec).FirstOrDefaultAsync();
     }
 
-    // New method to get a single entity with projection based on specification
+    // =================================================> New method to get a single entity with projection based on specification
     public async Task<TResult?> GetEntityWithSpecAsync<TResult>(ISpecification<T, TResult> spec)
     {
         return await ApplySpecification(spec).FirstOrDefaultAsync();
@@ -46,13 +53,13 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         return await context.Set<T>().ToListAsync();
     }
 
-    // New method to list entities based on specification
+    // =================================================> New method to list entities based on specification
     public async Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec)
     {
         return await ApplySpecification(spec).ToListAsync();
     }
 
-    // New method to list entities with projection based on specification
+    // =================================================> New method to list entities with projection based on specification
     public async Task<IReadOnlyList<TResult>> ListAsync<TResult>(ISpecification<T, TResult> spec)
     {
         return await ApplySpecification(spec).ToListAsync();
@@ -74,13 +81,14 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         context.Entry(entity).State = EntityState.Modified;
     }
 
-    // Helper method to apply specifications
+
+    // =================================================> Helper method to apply specifications
     private IQueryable<T> ApplySpecification(ISpecification<T> spec)
     {
         return SpecificationEvaluator<T>.GetQuery(context.Set<T>().AsQueryable(), spec);
     }
 
-    // Helper method to apply specifications with projection
+    // =================================================> Helper method to apply specifications with projection
     private IQueryable<TResult> ApplySpecification<TResult>(ISpecification<T, TResult> spec)
     {
         return SpecificationEvaluator<T>.GetQuery<T, TResult>(context.Set<T>().AsQueryable(), spec);
