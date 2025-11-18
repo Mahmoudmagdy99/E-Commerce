@@ -1,0 +1,32 @@
+@if (product) {
+<mat-card appearance="raised" class="h-full">
+  <!-- Image Container -->
+  <div class="overflow-hidden bg-gray-100">
+    <img
+      [src]="product.pictureUrl"
+      [alt]="'Image of ' + product.name"
+      class="w-full h-48 sm:h-56 md:h-64 object-cover hover:scale-105 transition-transform duration-300"
+    />
+  </div>
+
+  <!-- Content Container -->
+  <mat-card-content class="p-3 sm:p-4 md:p-5">
+    <h2 class="text-xs sm:text-sm md:text-base font-semibold uppercase truncate">
+      {{ product.name }}
+    </h2>
+    <p class="text-gray-600 mt-2 text-sm sm:text-base font-medium">
+      {{ product.price | currency }}
+    </p>
+    <!-- <p class="text-gray-500 text-xs sm:text-sm mt-1">Brand: {{ product.brand }}</p> -->
+  </mat-card-content>
+
+  <!-- Actions -->
+  <mat-card-actions class="flex justify-center p-3 sm:p-4 md:p-5 pt-0">
+    <button mat-stroked-button color="primary" class="w-full sm:w-auto px-4 py-2">
+      <mat-icon class="mr-2">add_shopping_cart</mat-icon>
+      <span class="hidden sm:inline">Add to Cart</span>
+      <span class="sm:hidden">Add</span>
+    </button>
+  </mat-card-actions>
+</mat-card>
+}

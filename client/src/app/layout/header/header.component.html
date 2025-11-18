@@ -1,17 +1,37 @@
 <header class="shadow-md p-3 w-full bg-white">
-    <div class="flex align-middle items-center justify-between max-w-screen-2xl mx-auto">
-        <img src="/images/logo.png" alt="app logo" class="max-h-16">
-        <nav class="flex gap-3 my-2 uppercase text-xl">
-            <a>Home</a>
-            <a>Shop</a>
-            <a>Contact</a>
-        </nav>
-        <div class="flex gap-3 align-middle">
-            <a matBadge="5" matBadgeSize="large" class="custom-badge mt-2 mr-2">
-                <mat-icon>shopping_cart</mat-icon>
-            </a>
-            <button mat-stroked-button>Login</button>
-            <button mat-stroked-button>Register</button>
-        </div>
+  <div class="flex align-middle items-center justify-between max-w-screen-2xl mx-auto">
+    <img src="/images/logo.png" alt="app logo" class="max-h-16" style="width: 100px;"/>
+    <nav class="hidden md:flex gap-6 items-center uppercase text-sm md:text-base">
+      <a class="hover:text-primary cursor-pointer">Home</a>
+      <a class="hover:text-primary cursor-pointer">Shop</a>
+      <a class="hover:text-primary cursor-pointer">Contact</a>
+    </nav>
+    <div class="flex gap-3 align-middle">
+      <a matBadge="5" matBadgeSize="large" class="custom-badge mt-2 mr-2">
+        <mat-icon>shopping_cart</mat-icon>
+      </a>
+      <div class="hidden md:flex gap-6 items-center uppercase text-sm md:text-base">
+        <button mat-stroked-button class="hidden sm:inline-block px-3">Login</button>
+        <button mat-stroked-button class="hidden sm:inline-block px-3">Register</button>
+      </div>
+
+      <button mat-icon-button class="md:hidden" aria-label="Open menu" (click)="toggleMenu()">
+        <mat-icon>{{ isOpen ? 'close' : 'menu' }}</mat-icon>
+      </button>
     </div>
+  </div>
+
+  <!-- Mobile nav: toggled by hamburger -->
+  @if(isOpen){
+  <div class="md:hidden mt-2 px-3">
+    <nav class="flex flex-col gap-2 uppercase text-sm">
+      <a class="py-2 px-3 rounded hover:bg-gray-100">Home</a>
+      <a class="py-2 px-3 rounded hover:bg-gray-100">Shop</a>
+      <a class="py-2 px-3 rounded hover:bg-gray-100">Contact</a>
+      <button mat-stroked-button class="sm:inline-block px-3">Login</button>
+      <button mat-stroked-button class="sm:inline-block px-3">Register</button>
+    </nav>
+  </div>
+  }
+  
 </header>
