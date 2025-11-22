@@ -48,3 +48,7 @@ catch (Exception ex)
 }
 
 app.Run();
+
+//dotnet ef database update -p Infrastructure -s API
+//docker compose down
+//docker compose up -d
