@@ -5,6 +5,7 @@ import { MatBadge } from '@angular/material/badge';
 import { RouterLink, RouterLinkActive } from "@angular/router";
 import { BusyService } from '../../core/services/busy.service';
 import {MatProgressBar} from '@angular/material/progress-bar';
+import { CartService } from '../../core/services/cart.service';
 
 
 @Component({
@@ -17,6 +18,7 @@ export class HeaderComponent {
 
   isOpen = false;
   busyService = inject(BusyService);
+  cartService = inject(CartService);
 
   toggleMenu(): void {
     this.isOpen = !this.isOpen;

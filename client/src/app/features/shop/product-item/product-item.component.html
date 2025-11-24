@@ -21,8 +21,8 @@
   </mat-card-content>
 
   <!-- Actions -->
-  <mat-card-actions class="flex justify-center p-3 sm:p-4 md:p-5 pt-0">
-    <button mat-stroked-button color="primary" class="w-full sm:w-auto px-4 py-2">
+  <mat-card-actions class="flex justify-center p-3 sm:p-4 md:p-5 pt-0" (click)="$event.stopPropagation()">
+    <button mat-stroked-button color="primary" class="w-full sm:w-auto px-4 py-2" (click)="cartService.addItemToCart(product)">
       <mat-icon class="mr-2">add_shopping_cart</mat-icon>
       <span class="hidden sm:inline">Add to Cart</span>
       <span class="sm:hidden">Add</span>
