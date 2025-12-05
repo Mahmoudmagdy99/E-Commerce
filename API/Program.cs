@@ -35,12 +35,14 @@ builder.Services.AddAuthentication();
 
 builder.Services.AddIdentityApiEndpoints<AppUser>().AddEntityFrameworkStores<StoreContext>();
 
+builder.Services.AddScoped<IPaymentService, PaymentService>();
+
 var app = builder.Build();
 
 
 
+// middleware
 // Configure the HTTP request pipeline.
-
 
 app.UseMiddleware<ExceptionMiddleware>();
 
