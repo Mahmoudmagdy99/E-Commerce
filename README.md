@@ -1,7 +1,7 @@
-markdown
+
 #  Full-Stack E-Commerce Platform
 
-A production-ready full-stack e-commerce application built with ASP.NET Core (Web API) and Angular. Skinet demonstrates clean architecture, domain-driven design (DDD) principles, and real-world features like authentication, payments, caching, and admin tooling.
+A production-ready full-stack e-commerce Web application built with ASP.NET Core (Web API) and Angular (frontend). Implemented a Clean Architecture (Core/Infrastructure layers) using Entity Framework Core (SQL Server) with repository and unit-of-work patterns for data access. Configured JWT-based authentication (ASP.NET Identity) with role-based authorization, integrated Stripe for payment processing and promotional coupons, and leveraged Redis for caching (shopping cart and API responses). Developed the Angular client with Angular Material and Tailwind CSS, consuming RESTful APIs and using services, guards, and interceptors to support product catalog browsing, shopping cart and checkout workflows, and real-time order notifications via SignalR.
 
 
 Overview
