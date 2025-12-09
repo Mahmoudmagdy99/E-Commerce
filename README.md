@@ -5,9 +5,11 @@ A production-ready e-commerce application built with ASP.NET Core Web API and An
 🚀 Overview
 
 Skinet is a full-stack e-commerce platform demonstrating Clean Architecture, domain-driven design principles, and scalable application structure.
+
 The project integrates robust security, enterprise-grade data access patterns, high-performance caching, and a modern UI with real-time capabilities.
 
 🏗️ Key Features
+
 🔹 Backend (ASP.NET Core Web API)
 
 Clean, modular architecture following DDD principles
@@ -45,11 +47,16 @@ Configurable environment variables
 Structured solution using Core, Infrastructure, and API layers
 
 📁 Project Structure
+
 Skinet/
-├── Core/                # Domain models, interfaces, specifications
-├── Infrastructure/      # EF Core, repositories, Unit of Work, context, caching
-├── API/                 # Controllers, middleware, authentication, DI setup
-└── client/              # Angular application (UI, components, services)
+
+├── Core/ # Domain models, interfaces, specifications
+
+├── Infrastructure/ # EF Core, repositories, Unit of Work, context, caching
+
+├── API/ # Controllers, middleware, authentication, DI setup
+
+└── client/ # Angular application (UI, components, services)
 
 🛠️ Technologies Used
 
