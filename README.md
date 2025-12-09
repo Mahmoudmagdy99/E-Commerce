@@ -1,5 +1,5 @@
 ```markdown
-# Skinet — Full-Stack E-Commerce Platform
+#  Full-Stack E-Commerce Platform
 
 A production-ready full-stack e-commerce application built with ASP.NET Core (Web API) and Angular. Skinet demonstrates clean architecture, domain-driven design (DDD) principles, and real-world features like authentication, payments, caching, and admin tooling.
 
@@ -19,16 +19,14 @@ Table of Contents
 - [Configuration & Secrets](#configuration--secrets)
 - [Testing](#testing)
 - [Deployment](#deployment)
-- [Contributing](#contributing)
-- [License & Acknowledgements](#license--acknowledgements)
-- [Contact](#contact)
+
 
 Overview
 --------
 Skinet is intended as a reference implementation of a scalable e-commerce platform demonstrating:
 - Clear separation of concerns (Core / Infrastructure / API / client)
 - Testable data access using specifications and Unit of Work patterns
-- Secure authentication and role-based authorization (JWT)
+- Secure authentication and role-based authorisation (JWT)
 - Payment integration with Stripe (including webhook handling)
 - Distributed caching using Redis
 - Real-time features using SignalR
@@ -39,7 +37,7 @@ Key Features
 Backend (ASP.NET Core Web API)
 - Clean, modular architecture following DDD practices
 - Specification pattern + Unit of Work for repositories
-- JWT authentication with role-based authorization
+- JWT authentication with role-based authorisation
 - Stripe payments + secure webhook endpoints
 - Redis caching for improved performance
 - Global error handling and consistent API responses
@@ -48,10 +46,10 @@ Backend (ASP.NET Core Web API)
 Frontend (Angular)
 - Angular (15+) storefront and admin UI
 - Material UI + Tailwind CSS for styling and layout
-- Product catalog, filtering, cart, checkout flows
+- Product catalogue, filtering, cart, checkout flows
 - Admin dashboard for product & order management
 - SignalR for real-time updates
-- Interceptors, guards, services and centralized state practices
+- Interceptors, guards, services and centralised state practices
 
 DevOps & Infrastructure
 - Dockerized development environment
@@ -68,8 +66,8 @@ Top-level layout:
 
 Tech Stack
 ----------
-- Backend: ASP.NET Core 7, Entity Framework Core
-- Frontend: Angular 15+, Angular Material, Tailwind CSS
+- Backend: ASP.NET Core, Entity Framework Core
+- Frontend: Angular, Angular Material, Tailwind CSS
 - Database: SQL Server / LocalDB (EF migrations supported)
 - Cache: Redis
 - Payments: Stripe (server-side + webhooks)
@@ -182,22 +180,7 @@ Deployment
   - Proper CORS configuration
   - Scaling for Redis, DB, and SignalR
 
-Contributing
-------------
-Contributions are welcome. If you'd like to contribute:
-1. Fork the repository
-2. Create a feature branch (git checkout -b feature/your-feature)
-3. Implement changes and add tests
-4. Open a pull request with a clear description
 
-License & Acknowledgements
---------------------------
-- Add your preferred license file (e.g. MIT) to the repository root.
-- This project draws on common patterns and community libraries for ASP.NET Core and Angular.
 
-Contact
--------
-- Maintainer: Mahmoudmagdy99
-- For issues: use the GitHub repository Issues tab.
 
-```
+
