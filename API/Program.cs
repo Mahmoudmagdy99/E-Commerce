@@ -57,10 +57,16 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
+app.UseDefaultFiles();
+
+app.UseStaticFiles();
+
 app.MapControllers();
 app.MapGroup("api").MapIdentityApi<AppUser>();
 
 app.MapHub<NotificationHub>("/hub/notifications");
+
+app.MapFallbackToController("Index","Fallback");
 
 try
 {
@@ -80,3 +86,4 @@ app.Run();
 //dotnet ef database update -p Infrastructure -s API
 //docker compose down
 //docker compose up -d
+//meet-elephant-7933.upstash.io:6379,Password=AR79AAImcDFlZWFiYjJmOGI4MjQ0YTdlYTgzYTY2NTg0YWU3N2I5MXAxNzkzMw,ssl=true,abortConnection=false
