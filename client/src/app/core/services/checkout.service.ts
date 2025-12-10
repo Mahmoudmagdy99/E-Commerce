@@ -1,14 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { of, map } from 'rxjs';
 import { DeliveryMethod } from '../../shared/models/deliveryMethods';
-import { map, of } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class CheckoutService {
-
   baseUrl = environment.apiUrl;
   private http = inject(HttpClient);
   deliveryMethods: DeliveryMethod[] = [];
@@ -22,5 +21,4 @@ export class CheckoutService {
       })
     );
   }
-  
 }

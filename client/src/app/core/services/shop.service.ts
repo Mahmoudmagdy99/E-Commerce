@@ -5,10 +5,9 @@ import { Product } from '../../shared/models/product';
 import { ShopParams } from '../../shared/models/shopParams';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class ShopService {
-  
   baseUrl = 'https://localhost:5001/api/';
   private http = inject(HttpClient);
   types: string[] = [];
@@ -46,14 +45,15 @@ export class ShopService {
   getBrands() {
     if (this.brands.length > 0) return;
     return this.http.get<string[]>(this.baseUrl + 'products/brands').subscribe({
-      next: response => this.brands = response
-    });
+      next: response => this.brands = response,
+    })
   }
 
   getTypes() {
-    if (this.brands.length > 0) return;
+    if (this.types.length > 0) return;
     return this.http.get<string[]>(this.baseUrl + 'products/types').subscribe({
-      next: response => this.types = response
-    });
+      next: response => this.types = response,
+    })
   }
+
 }

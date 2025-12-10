@@ -1,4 +1,4 @@
-
+using System;
 using Core.Entities;
 using Core.Interfaces;
 using Microsoft.Extensions.Configuration;
@@ -6,23 +6,17 @@ using Stripe;
 
 namespace Infrastructure.Services;
 
-public class PaymentService(IConfiguration config,
-                            ICartService cartService,
-                           IUnitOfWork unit) : IPaymentService
+public class PaymentService(IConfiguration config, ICartService cartService, 
+    IUnitOfWork unit) : IPaymentService
 {
-    public async Task<ShoppingCart?> CreateOrUpdatePaymentIntentAsync(string cartId)
+    public async Task<ShoppingCart?> CreateOrUpdatePaymentIntent(string cartId)
     {
-
-        //Load Stripe API Key
         StripeConfiguration.ApiKey = config["StripeSettings:SecretKey"];
 
-        //Get the user's shopping cart
         var cart = await cartService.GetCartAsync(cartId);
 
         if (cart == null) return null;
 
-
-        //Calculate shipping price
         var shippingPrice = 0m;
 
         if (cart.DeliveryMethodId.HasValue)
@@ -34,8 +28,6 @@ public class PaymentService(IConfiguration config,
             shippingPrice = deliveryMethod.Price;
         }
 
-
-        //Validate product prices from the cart against the product prices in the database
         foreach (var item in cart.Items)
         {
             var productItem = await unit.Repository<Core.Entities.Product>().GetByIdAsync(item.ProductId);
@@ -48,12 +40,10 @@ public class PaymentService(IConfiguration config,
             }
         }
 
-        //Create Stripe PaymentIntent service
         var service = new PaymentIntentService();
 
         PaymentIntent? intent = null;
 
-        //Create a new PaymentIntent
         if (string.IsNullOrEmpty(cart.PaymentIntentId))
         {
             var options = new PaymentIntentCreateOptions
@@ -66,7 +56,6 @@ public class PaymentService(IConfiguration config,
             cart.PaymentIntentId = intent.Id;
             cart.ClientSecret = intent.ClientSecret;
         }
-        //Update existing PaymentIntent
         else
         {
             var options = new PaymentIntentUpdateOptions
@@ -79,6 +68,5 @@ public class PaymentService(IConfiguration config,
         await cartService.SetCartAsync(cart);
 
         return cart;
-
     }
 }

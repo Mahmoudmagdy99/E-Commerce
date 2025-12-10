@@ -1,3 +1,4 @@
+using System;
 using API.DTOs;
 using API.Extensions;
 using Core.Entities;
@@ -12,7 +13,6 @@ namespace API.Controllers;
 [Authorize]
 public class OrdersController(ICartService cartService, IUnitOfWork unit) : BaseApiController
 {
-
     [HttpPost]
     public async Task<ActionResult<Order>> CreateOrder(CreateOrderDto orderDto)
     {
@@ -51,7 +51,6 @@ public class OrdersController(ICartService cartService, IUnitOfWork unit) : Base
         var deliveryMethod = await unit.Repository<DeliveryMethod>().GetByIdAsync(orderDto.DeliveryMethodId);
 
         if (deliveryMethod == null) return BadRequest("No delivery method selected");
-
         var order = new Order
         {
             OrderItems = items,
@@ -61,6 +60,7 @@ public class OrdersController(ICartService cartService, IUnitOfWork unit) : Base
             PaymentSummary = orderDto.PaymentSummary,
             PaymentIntentId = cart.PaymentIntentId,
             BuyerEmail = email
+
         };
 
         unit.Repository<Order>().Add(order);
@@ -81,7 +81,7 @@ public class OrdersController(ICartService cartService, IUnitOfWork unit) : Base
         var orders = await unit.Repository<Order>().ListAsync(spec);
 
         var ordersToReturn = orders.Select(o => o.ToDto()).ToList();
-
+        
         return Ok(ordersToReturn);
     }
 
@@ -96,6 +96,4 @@ public class OrdersController(ICartService cartService, IUnitOfWork unit) : Base
 
         return order.ToDto();
     }
-
-
 }
