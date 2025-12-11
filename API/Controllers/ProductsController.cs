@@ -1,6 +1,7 @@
 using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -8,7 +9,7 @@ namespace API.Controllers;
 
 public class ProductsController(IUnitOfWork unit) : BaseApiController
 {
-    
+
 
     [HttpGet]
     public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts([FromQuery]ProductspecParam specParams)
@@ -20,6 +21,7 @@ public class ProductsController(IUnitOfWork unit) : BaseApiController
     }
 
     [HttpGet("{id:int}")]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<Product>> GetProduct(int id)
     {
         var product = await unit.Repository<Product>().GetByIdAsync(id);
@@ -31,6 +33,7 @@ public class ProductsController(IUnitOfWork unit) : BaseApiController
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<ActionResult<Product>> CreateProduct(Product product)
     {
         unit.Repository<Product>().Add(product);
@@ -42,6 +45,7 @@ public class ProductsController(IUnitOfWork unit) : BaseApiController
     }
 
     [HttpPut("{id:int}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateProduct(int id, Product product)
     {
         if (id != product.Id || !ProductExists(id))
@@ -58,6 +62,7 @@ public class ProductsController(IUnitOfWork unit) : BaseApiController
     }
 
     [HttpDelete("{id:int}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteProduct(int id)
     {
         var product = await unit.Repository<Product>().GetByIdAsync(id);

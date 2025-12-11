@@ -16,5 +16,20 @@ namespace API.Controllers
             var Pagination = new Pagination<T>(PageIndex, PageSize, count, items);
             return Ok(Pagination);
         }
+
+        protected async Task<ActionResult> CreatePagedResult<T, TDto>(IGenericRepository<T> repo,
+        ISpecification<T> spec, int pageIndex, int pageSize, Func<T, TDto> toDto)
+            where T : BaseEntity, IDtoConvertible
+            where TDto : class
+        {
+            var items = await repo.ListAsync(spec);
+            var count = await repo.CountAsync(spec);
+
+            var dtoItems = items.Select(toDto).ToList();
+
+            var pagination = new Pagination<TDto>(pageIndex, pageSize, count, dtoItems);
+
+            return Ok(pagination);
+        }
     }
 }

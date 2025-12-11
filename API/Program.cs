@@ -4,6 +4,7 @@ using Core.Entities;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using StackExchange.Redis;
 
@@ -30,13 +31,15 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(config =>
     return ConnectionMultiplexer.Connect(configuration);
 });
 
-builder.Services.AddSingleton<ICartService,CartService>();
+builder.Services.AddSingleton<ICartService, CartService>();
 
 builder.Services.AddCors();
 
 builder.Services.AddAuthentication();
 
-builder.Services.AddIdentityApiEndpoints<AppUser>().AddEntityFrameworkStores<StoreContext>();
+builder.Services.AddIdentityApiEndpoints<AppUser>()
+.AddRoles<IdentityRole>()
+.AddEntityFrameworkStores<StoreContext>();
 
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 
@@ -66,15 +69,16 @@ app.MapGroup("api").MapIdentityApi<AppUser>();
 
 app.MapHub<NotificationHub>("/hub/notifications");
 
-app.MapFallbackToController("Index","Fallback");
+app.MapFallbackToController("Index", "Fallback");
 
 try
 {
     using var scope = app.Services.CreateScope();
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<StoreContext>();
+    var userManager = services.GetRequiredService<UserManager<AppUser>>();
     await context.Database.MigrateAsync();
-    await StoreContextSeed.SeedAsync(context);
+    await StoreContextSeed.SeedAsync(context, userManager);
 }
 catch (Exception ex)
 {
@@ -87,3 +91,5 @@ app.Run();
 //docker compose down
 //docker compose up -d
 //meet-elephant-7933.upstash.io:6379,Password=AR79AAImcDFlZWFiYjJmOGI4MjQ0YTdlYTgzYTY2NTg0YWU3N2I5MXAxNzkzMw,ssl=true,abortConnection=false
+//stripe listen --forward-to https://localhost:5001/api/payments/webhook -e payment_intent.succeeded
+//stripe trigger payment_intent.succeeded

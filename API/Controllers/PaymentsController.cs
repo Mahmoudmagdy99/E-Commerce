@@ -1,4 +1,3 @@
-using System;
 using API.Extensions;
 using API.SignalR;
 using Core.Entities;
@@ -19,12 +18,15 @@ public class PaymentsController(IPaymentService paymentService,
     IConfiguration config) : BaseApiController
 {
     private readonly string _whSecret = config["StripeSettings:WhSecret"]!;
+    public static string? cartf;
+
 
     [Authorize]
     [HttpPost("{cartId}")]
     public async Task<ActionResult> CreateOrUpdatePaymentIntent(string cartId)
     {
         var cart = await paymentService.CreateOrUpdatePaymentIntent(cartId);
+        cartf = cart?.PaymentIntentId!;
 
         if (cart == null) return BadRequest("Problem with your cart on the API");
 
@@ -51,7 +53,7 @@ public class PaymentsController(IPaymentService paymentService,
                 return BadRequest("Invalid event data.");
             }
 
-            await HandlePaymentIntentSucceeded(intent);
+            await HandlePaymentIntentSucceeded(intent,cartf!);
 
             return Ok();
         }
@@ -80,18 +82,18 @@ public class PaymentsController(IPaymentService paymentService,
         }
     }
 
-    private async Task HandlePaymentIntentSucceeded(PaymentIntent intent)
+    private async Task HandlePaymentIntentSucceeded(PaymentIntent intent, string cartf)
     {
         if (intent.Status == "succeeded")
         {
-            var spec = new OrderSpecification(intent.Id, true);
+            var spec = new OrderSpecification(cartf, true);
 
             var order = await unit.Repository<Order>().GetEntityWithSpecAsync(spec)
                         ?? throw new Exception("Order not found");
 
             order.Status = OrderStatus.PaymentReceived;
 
-            if ((long)order.GetTotal() * 100 != intent.Amount)
+            if ((long)order.GetTotal() > intent.Amount)
             {
                 order.Status = OrderStatus.PaymentMismatch;
             }
@@ -104,11 +106,13 @@ public class PaymentsController(IPaymentService paymentService,
 
             var connectionId = NotificationHub.GetConnectionIdByEmail(order.BuyerEmail);
 
-            if (!string.IsNullOrEmpty(connectionId)) 
+            if (!string.IsNullOrEmpty(connectionId))
             {
-                await hubContext.Clients.Client(connectionId).SendAsync("OrderCompleteNotification", 
+                await hubContext.Clients.Client(connectionId).SendAsync("OrderCompleteNotification",
                     order.ToDto());
             }
         }
+
     }
+    
 }
