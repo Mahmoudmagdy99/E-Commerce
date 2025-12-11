@@ -1,3 +1,4 @@
+using API.RequestHelpers;
 using Core.Entities;
 using Core.Interfaces;
 using Core.Specifications;
@@ -11,6 +12,7 @@ public class ProductsController(IUnitOfWork unit) : BaseApiController
 {
 
 
+    [Cached(600)]
     [HttpGet]
     public async Task<ActionResult<IReadOnlyList<Product>>> GetProducts([FromQuery]ProductspecParam specParams)
     {
@@ -20,6 +22,7 @@ public class ProductsController(IUnitOfWork unit) : BaseApiController
         return await CreatePagedResult(unit.Repository<Product>(), spec, specParams.PageIndex, specParams.PageSize);
     }
 
+    [Cached(600)]
     [HttpGet("{id:int}")]
     [Authorize(Roles = "Admin")]
     public async Task<ActionResult<Product>> GetProduct(int id)
@@ -34,6 +37,7 @@ public class ProductsController(IUnitOfWork unit) : BaseApiController
 
     [HttpPost]
     [Authorize(Roles = "Admin")]
+    [InvalidateCache("api/products|")]
     public async Task<ActionResult<Product>> CreateProduct(Product product)
     {
         unit.Repository<Product>().Add(product);
@@ -46,6 +50,7 @@ public class ProductsController(IUnitOfWork unit) : BaseApiController
 
     [HttpPut("{id:int}")]
     [Authorize(Roles = "Admin")]
+    [InvalidateCache("api/products|")]
     public async Task<IActionResult> UpdateProduct(int id, Product product)
     {
         if (id != product.Id || !ProductExists(id))
@@ -63,6 +68,7 @@ public class ProductsController(IUnitOfWork unit) : BaseApiController
 
     [HttpDelete("{id:int}")]
     [Authorize(Roles = "Admin")]
+    [InvalidateCache("api/products|")]
     public async Task<IActionResult> DeleteProduct(int id)
     {
         var product = await unit.Repository<Product>().GetByIdAsync(id);
@@ -82,6 +88,7 @@ public class ProductsController(IUnitOfWork unit) : BaseApiController
         return BadRequest("Failed to delete product");
     }
 
+    [Cached(1000)]
     [HttpGet("brands")]
     public async Task<ActionResult<IReadOnlyList<string>>> GetBrands()
     {
@@ -90,6 +97,7 @@ public class ProductsController(IUnitOfWork unit) : BaseApiController
         return Ok(brands);
     }
 
+    [Cached(1000)]
     [HttpGet("types")]
     public async Task<ActionResult<IReadOnlyList<string>>> GetTypes()
     {

@@ -11,6 +11,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
   styleUrl: './confirmation-dialog.component.scss'
 })
 export class ConfirmationDialogComponent {
+  
   dialogRef = inject(MatDialogRef<ConfirmationDialogComponent>);
   data = inject(MAT_DIALOG_DATA);
 

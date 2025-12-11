@@ -33,6 +33,10 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(config =>
 
 builder.Services.AddSingleton<ICartService, CartService>();
 
+// Response caching service
+// use AddSingleton to have a single instance throughout the app's lifetime
+builder.Services.AddSingleton<IResponseCacheService, ResponseCacheService>();
+
 builder.Services.AddCors();
 
 builder.Services.AddAuthentication();
