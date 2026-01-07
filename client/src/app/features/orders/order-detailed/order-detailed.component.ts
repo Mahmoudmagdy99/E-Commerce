@@ -39,7 +39,7 @@ export class OrderDetailedComponent implements OnInit {
   onReturnClick() {
     this.accountService.isAdmin()
       ? this.router.navigateByUrl('/admin')
-      : this.router.navigateByUrl('/orders');
+      : this.router.navigateByUrl('/shop');
   }
 
   loadOrder() {
