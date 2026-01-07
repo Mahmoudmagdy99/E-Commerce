@@ -24,7 +24,7 @@ public class ProductsController(IUnitOfWork unit) : BaseApiController
 
     [Cached(600)]
     [HttpGet("{id:int}")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public async Task<ActionResult<Product>> GetProduct(int id)
     {
         var product = await unit.Repository<Product>().GetByIdAsync(id);
